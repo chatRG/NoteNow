@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">NoteNow</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="about">About</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="title">Title</string>
+    <string name="content">Add Note&#8230;</string>
+    <string name="add_picture">Add picture</string>
+    <string name="exit">Press again to exit</string>
+    <string name="remove_all">Remove All</string>
+    <string name="save">Save</string>
+    <string name="empty">Notes? Nada.</string>
+    <string name="edit">Edit</string>
+    <string name="add_note">Add Note</string>
+    <string name="note_saved">The note is saved!</string>
+    <string name="enter_both"><![CDATA[Please enter both title & content]]></string>
+    <string name="sort">Sort</string>
+</resources>

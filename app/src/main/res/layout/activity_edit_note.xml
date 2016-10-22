@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar_main"
+        layout="@layout/toolbar" />
+
+    <EditText
+        android:id="@+id/note_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_main"
+        android:layout_margin="10dp"
+        android:enabled="false"
+        android:hint="@string/title"
+        android:inputType="text"
+        android:maxLength="40"
+        android:maxLines="1"
+        android:nextFocusLeft="@id/note_title"
+        android:nextFocusUp="@id/note_title" />
+
+    <EditText
+        android:id="@+id/note_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/note_title"
+        android:layout_margin="10dp"
+        android:enabled="false"
+        android:gravity="start"
+        android:hint="@string/content"
+        android:inputType="textMultiLine" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/note_title"
+        android:layout_centerHorizontal="true">
+
+        <View
+            android:layout_width="300dp"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark" />
+    </LinearLayout>
+
+</RelativeLayout>
