@@ -11,6 +11,7 @@
 - [x] Swipe to delete/dismiss
 - [x] Long press to re-position
 - [ ] Sort by
+- [ ] Search filter
 - [ ] Custom colors
 
 #####Open Source libraries used:
