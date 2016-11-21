@@ -11,12 +11,13 @@
 - [x] Swipe to delete/dismiss
 - [x] Long press to re-position
 - [ ] Sort by
-- [ ] Search filter
+- [x] Rank of Importance
+- [x] Search filter
 - [ ] Custom colors
 
 #####Open Source libraries used:
-- [Material Dialogs] (https://github.com/afollestad/material-dialogs)
-- [Floating Action Button] (https://github.com/makovkastar/FloatingActionButton)
-- [RecyclerViewHelper] (https://github.com/nisrulz/recyclerviewhelper)
+- Material Dialogs (afollestad)
+- Floating Action Button (makovkastar)
+- RecyclerViewHelper (nisrulz)
 
 Send me a request if you are willing to contribute. :sunglasses:
