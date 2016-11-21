@@ -8,7 +8,6 @@
     <string name="close">Close</string>
     <string name="cancel">Cancel</string>
     <string name="title">Title</string>
-    <string name="content">Add Note&#8230;</string>
     <string name="add_picture">Add picture</string>
     <string name="exit">Press again to exit</string>
     <string name="remove_all">Remove All</string>
@@ -17,6 +16,10 @@
     <string name="edit">Edit</string>
     <string name="add_note">Add Note</string>
     <string name="note_saved">The note is saved!</string>
-    <string name="enter_both"><![CDATA[Please enter both title & content]]></string>
+    <string name="enter_both">Please enter both title &amp; content</string>
+    <string name="enter_both_exit">Please enter both title &amp; content \n\t\t\t\t Press again to exit</string>
     <string name="sort">Sort</string>
+    <string name="search">Search</string>
+    <string name="dev_name">Developed by chatRG</string>
+    <string name="ok">OK</string>
 </resources>

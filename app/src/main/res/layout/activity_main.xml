@@ -2,8 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainRelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFE8E8E8"
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
@@ -18,7 +20,7 @@
         android:layout_centerVertical="true"
         android:gravity="center"
         android:text="@string/empty"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list"

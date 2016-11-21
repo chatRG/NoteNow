@@ -5,6 +5,7 @@ public class Note {
     private String title;
     private String content;
     private String time;
+    private String rank;
 
     public int getId() {
         return id;
@@ -36,5 +37,13 @@ public class Note {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 }

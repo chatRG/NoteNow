@@ -4,6 +4,14 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_search"
+        android:orderInCategory="100"
+        android:title="@string/search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="collapseActionView|ifRoom" />
+
+    <item
         android:id="@+id/action_clean"
         android:orderInCategory="100"
         android:title="@string/remove_all"

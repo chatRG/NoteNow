@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <array name="colors">
         <item>#3F51B5</item>
         <item>#424242</item>
@@ -12,4 +11,9 @@
         <item>#FF9800</item>
     </array>
 
+    <string-array name="sort_order">
+        <item>Title</item>
+        <item>Date</item>
+        <item>Rank</item>
+    </string-array>
 </resources>

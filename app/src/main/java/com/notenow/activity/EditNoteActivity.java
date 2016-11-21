@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.notenow.R;
@@ -30,6 +31,9 @@ public class EditNoteActivity extends AppCompatActivity
     private DBManager dbManager;
     private int backPressedCount;
     private boolean isEditPressed;
+    private boolean isEditEmpty;
+    private SeekBar mRankBar;
+    private int progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +51,44 @@ public class EditNoteActivity extends AppCompatActivity
         dbManager = new DBManager(this);
         titleEt = (EditText) findViewById(R.id.note_title);
         contentEt = (EditText) findViewById(R.id.note_content);
+        mRankBar = (SeekBar) findViewById(R.id.rankbar);
         backPressedCount = 0;
+        progress = -1;
         isEditPressed = false;
         noteID = getIntent().getIntExtra("id", -1);
         if (noteID != -1) {
             showNoteData(noteID);
         }
+        seekBarUpdate(mRankBar);
+        mRankBar.setEnabled(false);
+    }
+
+    private void seekBarUpdate(SeekBar mRankBar) {
+        mRankBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                progress = seekBar.getProgress();
+            }
+        });
     }
 
     private void showNoteData(int id) {
         Note note = dbManager.readData(id);
         titleEt.setText(note.getTitle());
         contentEt.setText(note.getContent());
+        if (progress < 0)
+            progress = 4; //default value
+        mRankBar.setProgress(progress);
 
         Spannable spannable = titleEt.getText();
         Selection.setSelection(spannable, titleEt.getText().length());
@@ -94,6 +124,7 @@ public class EditNoteActivity extends AppCompatActivity
             case R.id.action_edit:
                 titleEt.setEnabled(true);
                 contentEt.setEnabled(true);
+                mRankBar.setEnabled(true);
                 contentEt.requestFocus();
                 isEditPressed = true;
                 InputMethodManager imm =
@@ -103,7 +134,7 @@ public class EditNoteActivity extends AppCompatActivity
 
             case R.id.action_save:
                 if (saveNote())
-                    Toast.makeText(this, R.string.note_saved, Toast.LENGTH_SHORT).show();
+                    ;
                 break;
 
             default:
@@ -121,46 +152,62 @@ public class EditNoteActivity extends AppCompatActivity
             return false;
         }
         if (noteID == -1) {
-
-            dbManager.addToDB(title, content, time);
+            progress = mRankBar.getProgress() + 1;
+            dbManager.addToDB(title, content, time, String.valueOf(progress));
         } else {
-
-            dbManager.updateNote(noteID, title, content, time);
+            progress = mRankBar.getProgress() + 1;
+            dbManager.updateNote(noteID, title, content, time, String.valueOf(progress));
         }
-        Intent i = new Intent(EditNoteActivity.this, MainActivity.class);
-        startActivity(i);
+        Intent i = new Intent(getBaseContext(), MainActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.putExtra("isSaved", 1);
+        startActivity(i);
         this.finish();
         return true;
     }
 
     private void backPressExec() {
         if (!isEditPressed) {
-
-            Intent intent = new Intent(EditNoteActivity.this, MainActivity.class);
+            //without editing
+            Intent intent = new Intent(getBaseContext(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             this.finish();
         } else {
             if (titleEt.getText().toString().isEmpty() && contentEt.getText().toString().isEmpty()) {
-
-                Intent intent = new Intent(EditNoteActivity.this, MainActivity.class);
+                //when both title and content is empty
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 this.finish();
             } else if (titleEt.getText().toString().isEmpty() || contentEt.getText().toString().isEmpty()) {
+                //when one of title or content is empty
+                if (backPressedCount == 0)
+                    Toast.makeText(this, R.string.enter_both, Toast.LENGTH_LONG).show();
+                backPressedCount++;
+                isEditEmpty = true;
+                if (backPressedCount > 1) {
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    this.finish();
+                }
 
-                Toast.makeText(this, R.string.enter_both, Toast.LENGTH_LONG).show();
             } else {
-                if (backPressedCount == 0) {
-
+                if (backPressedCount == 0 || isEditEmpty) {
+                    //both title and content entered and back is pressed once
                     titleEt.setEnabled(false);
                     contentEt.setEnabled(false);
+                    isEditEmpty = false;
                     backPressedCount++;
                 } else if (backPressedCount > 0) {
-
-                    if (saveNote())
-                        Toast.makeText(this, R.string.note_saved, Toast.LENGTH_SHORT).show();
+                    //back pressed for saving
+                    if (saveNote()) {
+                        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("isSaved", 1);
+                        startActivity(intent);
+                    }
                     this.finish();
                 }
             }

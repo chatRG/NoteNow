@@ -12,4 +12,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AboutTheme" parent="AppTheme">
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#d2000000</item>
+    </style>
+
 </resources>

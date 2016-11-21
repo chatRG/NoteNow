@@ -1,9 +1,5 @@
 package com.notenow.adapter;
 
-/**
- * Created by Sayan Chatterjee on 10/21/16.
- */
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.notenow.R;
+import com.notenow.db.DBManager;
 import com.notenow.model.Note;
 
 import java.util.Collections;
@@ -23,12 +20,12 @@ import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ItemViewHolder>
         implements RVHAdapter {
 
-    //private Context context;
+    private Context context;
     private List<Note> notes;
 
 
     public RecyclerViewAdapter(Context context, List<Note> notes) {
-        //this.context = context;
+        this.context = context;
         this.notes = notes;
     }
 
@@ -36,11 +33,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notes.clear();
         notifyDataSetChanged();
     }
-
-    /*public void removeItem(int position) {
-        notes.remove(position);
-        notifyDataSetChanged();
-    }*/
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,7 +47,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         holder.tvId.setText((notes.get(position).getId() + ""));
         holder.tvTitle.setText(notes.get(position).getTitle());
-        holder.tvContent.setText(notes.get(position).getContent());
+        String temp = notes.get(position).getContent();
+        if (temp.length() >= 45)
+            temp = temp.substring(0, 45).trim() + "...";
+        holder.tvContent.setText(temp);
         holder.tvTime.setText(notes.get(position).getTime());
     }
 
@@ -64,9 +59,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return notes.size();
     }
 
-    public Note getItem(int position) {
-        return notes.get(position);
-    }
+    /*public Note sortItem(int position, Note mNotes) {
+        //
+        return mNotes;
+    }*/
 
     @Override
     public long getItemId(int position) {
@@ -82,6 +78,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onItemDismiss(int position, int direction) {
+        new DBManager(context).deleteNote(notes.get(position).getId());
         notes.remove(position);
         notifyDataSetChanged();
         notifyItemRemoved(position);
@@ -92,6 +89,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public TextView tvTitle;
         public TextView tvContent;
         public TextView tvTime;
+        public TextView tvRank;
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
@@ -113,16 +111,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onItemSelected(int actionstate) {
-            /*String noteId = String.valueOf(notes.get(actionstate).getId());
-            Intent intent = new Intent(ctx, EditNoteActivity.class);
-            intent.putExtra("id", Integer.parseInt(noteId));
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            ctx.startActivity(intent);*/
         }
 
         @Override
         public void onItemClear() {
-            //System.out.println("Item is unselected");
         }
 
     }

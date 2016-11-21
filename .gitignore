@@ -10,6 +10,9 @@
 
 .idea
 .build
+/build
+/app/build
+
 
 # tags
 tag

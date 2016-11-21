@@ -1,20 +1,24 @@
 package com.notenow.activity;
 
-import android.annotation.TargetApi;
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,49 +40,64 @@ public class MainActivity extends AppCompatActivity
 
     long waitTime = 2000;
     long touchTime = 0;
-    private FloatingActionButton addBtn;
+    private FloatingActionButton mFAB;
     private DBManager dm;
     private List<Note> noteDataList = new ArrayList<>();
-    private RecyclerViewAdapter adapter;
-    private RecyclerView myrecyclerview;
-    private TextView emptyListTextView;
+    private List<Note> tempList = new ArrayList<>();
+    private RecyclerViewAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private TextView mEmptyList;
+    private RelativeLayout mainRelativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar_main));
+        setSupportActionBar((Toolbar) this.findViewById(R.id.toolbar_main));
         getSupportActionBar().setTitle(R.string.app_name);
 
+        mainRelativeLayout = (RelativeLayout) findViewById(R.id.mainRelativeLayout);
+
+        dm = new DBManager(this);
+        mRecyclerView = (RecyclerView) this.findViewById(R.id.rv_list);
+        dm.readFromDB(noteDataList);
+        initList(tempList);
         init();
     }
 
+
+    private void initList(List<Note> mlist) {
+        dm.readFromDB(mlist);
+        mAdapter = new RecyclerViewAdapter(this, mlist);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+
     private void init() {
-        dm = new DBManager(this);
-        dm.readFromDB(noteDataList);
-        myrecyclerview = (RecyclerView) findViewById(R.id.rv_list);
-        addBtn = (FloatingActionButton) findViewById(R.id.add);
-        emptyListTextView = (TextView) findViewById(R.id.empty);
-        addBtn.setOnClickListener(this);
-        addBtn.attachToRecyclerView(myrecyclerview);
-        addBtn.show();
-        adapter = new RecyclerViewAdapter(this, noteDataList);
-        myrecyclerview.hasFixedSize();
-        myrecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        myrecyclerview.setAdapter(adapter);
+        mFAB = (FloatingActionButton) this.findViewById(R.id.add);
+        mFAB.setOnClickListener(this);
+        mFAB.attachToRecyclerView(mRecyclerView);
+        mFAB.show();
+        mEmptyList = (TextView) this.findViewById(R.id.empty);
+        mRecyclerView.hasFixedSize();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        int value = getIntent().getIntExtra("isSaved", -1);
+        if (value != -1)
+            showSnackBar(R.string.note_saved, true);
 
         // Setup onItemTouchHandler
-        ItemTouchHelper.Callback callback = new RVHItemTouchHelperCallback(adapter, true, true, true);
+        ItemTouchHelper.Callback callback = new RVHItemTouchHelperCallback(mAdapter, true, true, true);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(myrecyclerview);
+        helper.attachToRecyclerView(mRecyclerView);
 
         // Set the divider
-        myrecyclerview.addItemDecoration(
+        mRecyclerView.addItemDecoration(
                 new RVHItemDividerDecoration(this, LinearLayoutManager.VERTICAL));
 
         // Set On Click
-        myrecyclerview.addOnItemTouchListener(
+        mRecyclerView.addOnItemTouchListener(
                 new RVHItemClickListener(this, new RVHItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
@@ -93,15 +112,17 @@ public class MainActivity extends AppCompatActivity
         updateView();
     }
 
+
     public void updateView() {
-        if (noteDataList.isEmpty()) {
-            myrecyclerview.setVisibility(View.GONE);
-            emptyListTextView.setVisibility(View.VISIBLE);
+        if (tempList.isEmpty()) {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyList.setVisibility(View.VISIBLE);
         } else {
-            myrecyclerview.setVisibility(View.VISIBLE);
-            emptyListTextView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyList.setVisibility(View.GONE);
         }
     }
+
 
     @Override
     public void onClick(View view) {
@@ -114,42 +135,114 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    public void showSnackBar(int showSnack, boolean lengthLong) {
+        if (lengthLong)
+            Snackbar.make(mainRelativeLayout, showSnack, Snackbar.LENGTH_LONG)
+                    .show();
+        else
+            Snackbar.make(mainRelativeLayout, showSnack, Snackbar.LENGTH_SHORT)
+                    .show();
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        SearchView searchView = (SearchView) MenuItemCompat
+                .getActionView(menu.findItem(R.id.action_search));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(new ComponentName(getApplicationContext(),
+                        SearchActivity.class)));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.removeAllItem();
+                initList(tempList);
+
+                for (int i = 0; i < tempList.size(); i++) {
+
+                    if (newText.isEmpty()) {
+                        mAdapter.removeAllItem();
+                        initList(tempList);
+                    } else if (!tempList.get(i)
+                            .getTitle()
+                            .toLowerCase()
+                            .contains(newText.toLowerCase())
+                            &&
+                            !tempList.get(i)
+                                    .getContent()
+                                    .toLowerCase()
+                                    .contains(newText.toLowerCase())) {
+                        tempList.remove(i);
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+                return false;
+            }
+        });
         return true;
     }
 
+
     @Override
-    @TargetApi(21)
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_about:
-                MaterialDialog dialog = new MaterialDialog.Builder(this)
-                        .title(R.string.about)
-                        .customView(R.layout.dialog_webview, false)
-                        .positiveText(android.R.string.ok)
-                        .build();
-                WebView webView = (WebView) dialog.getCustomView().findViewById(R.id.webview);
-                webView.loadUrl("file:///android_asset/webview.html");
-                dialog.show();
+                Intent intent = new Intent(this, About.class);
+                startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 break;
             case R.id.action_clean:
                 new MaterialDialog.Builder(MainActivity.this)
                         .content(R.string.are_you_sure)
-                        .icon(getDrawable(R.mipmap.ic_launcher))
-                        .buttonRippleColor(getResources().getColor(R.color.ripple))
+                        .icon(ContextCompat.getDrawable(this, R.mipmap.ic_launcher))
+                        .buttonRippleColor(ContextCompat.getColor(this, R.color.ripple))
                         .positiveText(R.string.yes)
                         .negativeText(R.string.no)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                for (int id = 0; id < 100; id++)
-                                    DBManager.getInstance(MainActivity.this).deleteNote(id);
-                                adapter.removeAllItem();
+                                new DBManager(getBaseContext())
+                                        .getInstance(getBaseContext())
+                                        .deleteAllNote();
+                                mAdapter.removeAllItem();
                                 updateView();
                             }
                         }).show();
+                break;
+            case R.id.action_sort:
+                new MaterialDialog.Builder(this)
+                        .items(R.array.sort_order)
+                        .buttonRippleColor(ContextCompat.getColor(this, R.color.ripple))
+                        .autoDismiss(false)
+                        .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                switch (which) {
+                                    case 0:
+                                        new DBManager(getBaseContext())
+                                                .getInstance(getBaseContext())
+                                                .sortby_Title();
+                                        mAdapter.removeAllItem();
+                                        initList(tempList);
+                                        updateView();
+                                        mAdapter.notifyDataSetChanged();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                return true;
+                            }
+                        })
+                        .positiveText(R.string.ok)
+                        .show();
                 break;
             default:
                 break;
@@ -161,7 +254,7 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
         if ((currentTime - touchTime) >= waitTime) {
-            Toast.makeText(this, R.string.exit, Toast.LENGTH_SHORT).show();
+            showSnackBar(R.string.exit, false);
             touchTime = currentTime;
         } else {
             this.finish();
