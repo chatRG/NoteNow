@@ -32,7 +32,7 @@ public class DBManager {
         return instance;
     }
 
-    private void addToDB(Cursor mCursor) {
+    /*private void addToDB(Cursor mCursor) {
         ContentValues cv = new ContentValues();
         try {
             while (mCursor.moveToNext()) {
@@ -49,7 +49,7 @@ public class DBManager {
             e.printStackTrace();
         }
         dbWriter.insert(NoteDBOpenHelper.TABLE_NAME, null, cv);
-    }
+    }*/
 
 
     public void addToDB(String title, String content, String time, String rank) {
@@ -113,13 +113,36 @@ public class DBManager {
         return note;
     }
 
-    public void sortby_Title() {
-        Cursor mCursor = dbWriter.query(NoteDBOpenHelper.TABLE_NAME,
-                null, null, null, null, null, NoteDBOpenHelper.TITLE + " DESC", null);
+    public boolean sortby(String orderBy) {
+        /*Cursor mCursor;
+
+        String create_Table="create table note2 like " + NoteDBOpenHelper.TABLE_NAME;
+        dbWriter.execSQL(create_Table);
+        dbWriter.execSQL("INSERT INTO note2 ("
+                                + NoteDBOpenHelper.ID+", "
+                                + NoteDBOpenHelper.CONTENT+", "
+                                + NoteDBOpenHelper.TITLE+", "
+                                + NoteDBOpenHelper.RANK+", "
+                                + NoteDBOpenHelper.TIME+")" +
+                " SELECT "
+                + NoteDBOpenHelper.ID+", "
+                + NoteDBOpenHelper.CONTENT+", "
+                + NoteDBOpenHelper.TITLE+", "
+                + NoteDBOpenHelper.RANK+", "
+                + NoteDBOpenHelper.TIME+
+        " FROM "+NoteDBOpenHelper.TABLE_NAME+" ORDER BY "+orderBy);
+        dbWriter.execSQL("RENAME TABLE "+NoteDBOpenHelper.TABLE_NAME+" TO note1");
+        dbWriter.execSQL("RENAME TABLE note2 TO "+NoteDBOpenHelper.TABLE_NAME);*/
+
+        /*
+        mCursor = dbWriter.query(NoteDBOpenHelper.TABLE_NAME,
+                null, null, null, null, null, orderBy);
         if (mCursor == null)
-            return;
+            return false;
         deleteAllNote();
         addToDB(mCursor);
+        dbWriter.execSQL("");*/
+        return true;
     }
 }
 

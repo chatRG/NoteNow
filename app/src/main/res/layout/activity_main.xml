@@ -5,7 +5,7 @@
     android:id="@+id/mainRelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFE8E8E8"
+    android:background="@drawable/bg"
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 

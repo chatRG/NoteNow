@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import github.nisrulz.recyclerviewhelper.RVHItemClickListener;
-import github.nisrulz.recyclerviewhelper.RVHItemDividerDecoration;
 import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 
 public class MainActivity extends AppCompatActivity
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton mFAB;
     private DBManager dm;
     private List<Note> noteDataList = new ArrayList<>();
-    private List<Note> tempList = new ArrayList<>();
     private RecyclerViewAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private TextView mEmptyList;
@@ -57,35 +55,27 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar((Toolbar) this.findViewById(R.id.toolbar_main));
         getSupportActionBar().setTitle(R.string.app_name);
 
+        firstInit();
+    }
+
+    private void firstInit() {
         mainRelativeLayout = (RelativeLayout) findViewById(R.id.mainRelativeLayout);
-
-        dm = new DBManager(this);
-        mRecyclerView = (RecyclerView) this.findViewById(R.id.rv_list);
-        dm.readFromDB(noteDataList);
-        initList(tempList);
-        init();
-    }
-
-
-    private void initList(List<Note> mlist) {
-        dm.readFromDB(mlist);
-        mAdapter = new RecyclerViewAdapter(this, mlist);
-        mRecyclerView.setAdapter(mAdapter);
-    }
-
-
-    private void init() {
-        mFAB = (FloatingActionButton) this.findViewById(R.id.add);
-        mFAB.setOnClickListener(this);
-        mFAB.attachToRecyclerView(mRecyclerView);
-        mFAB.show();
-        mEmptyList = (TextView) this.findViewById(R.id.empty);
-        mRecyclerView.hasFixedSize();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         int value = getIntent().getIntExtra("isSaved", -1);
         if (value != -1)
             showSnackBar(R.string.note_saved, true);
+        init();
+        initFab();
+    }
+
+    private void init() {
+        dm = new DBManager(this);
+        mRecyclerView = (RecyclerView) this.findViewById(R.id.rv_list);
+        dm.readFromDB(noteDataList);
+        mAdapter = new RecyclerViewAdapter(this, noteDataList);
+        mRecyclerView.setAdapter(mAdapter);
+        mEmptyList = (TextView) this.findViewById(R.id.empty);
+        mRecyclerView.hasFixedSize();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Setup onItemTouchHandler
         ItemTouchHelper.Callback callback = new RVHItemTouchHelperCallback(mAdapter, true, true, true);
@@ -93,8 +83,8 @@ public class MainActivity extends AppCompatActivity
         helper.attachToRecyclerView(mRecyclerView);
 
         // Set the divider
-        mRecyclerView.addItemDecoration(
-                new RVHItemDividerDecoration(this, LinearLayoutManager.VERTICAL));
+        /*mRecyclerView.addItemDecoration(
+                new RVHItemDividerDecoration(this, LinearLayoutManager.VERTICAL));*/
 
         // Set On Click
         mRecyclerView.addOnItemTouchListener(
@@ -112,9 +102,15 @@ public class MainActivity extends AppCompatActivity
         updateView();
     }
 
+    private void initFab() {
+        mFAB = (FloatingActionButton) this.findViewById(R.id.add);
+        mFAB.setOnClickListener(this);
+        mFAB.attachToRecyclerView(mRecyclerView);
+        mFAB.show();
+    }
 
     public void updateView() {
-        if (tempList.isEmpty()) {
+        if (noteDataList.isEmpty()) {
             mRecyclerView.setVisibility(View.GONE);
             mEmptyList.setVisibility(View.VISIBLE);
         } else {
@@ -164,28 +160,16 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                mAdapter.removeAllItem();
-                initList(tempList);
-
-                for (int i = 0; i < tempList.size(); i++) {
-
-                    if (newText.isEmpty()) {
-                        mAdapter.removeAllItem();
-                        initList(tempList);
-                    } else if (!tempList.get(i)
-                            .getTitle()
-                            .toLowerCase()
-                            .contains(newText.toLowerCase())
-                            &&
-                            !tempList.get(i)
-                                    .getContent()
-                                    .toLowerCase()
-                                    .contains(newText.toLowerCase())) {
-                        tempList.remove(i);
-                    }
+                newText = newText.toLowerCase();
+                List<Note> tempList = new ArrayList<>();
+                String tmpTitle;
+                for (Note note : noteDataList) {
+                    tmpTitle = note.getTitle().toLowerCase();
+                    if (tmpTitle.contains(newText))
+                        tempList.add(note);
                 }
-                mAdapter.notifyDataSetChanged();
-                return false;
+                mAdapter.setFilter(tempList);
+                return true;
             }
         });
         return true;
@@ -196,7 +180,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_about:
-                Intent intent = new Intent(this, About.class);
+                Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 break;
             case R.id.action_clean:
@@ -221,23 +205,30 @@ public class MainActivity extends AppCompatActivity
                 new MaterialDialog.Builder(this)
                         .items(R.array.sort_order)
                         .buttonRippleColor(ContextCompat.getColor(this, R.color.ripple))
-                        .autoDismiss(false)
+                        .autoDismiss(true)
                         .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                /*String orderBy;
                                 switch (which) {
-                                    case 0:
-                                        new DBManager(getBaseContext())
-                                                .getInstance(getBaseContext())
-                                                .sortby_Title();
-                                        mAdapter.removeAllItem();
-                                        initList(tempList);
-                                        updateView();
-                                        mAdapter.notifyDataSetChanged();
+                                    case 1:
+                                        orderBy = NoteDBOpenHelper.TIME;
+                                        break;
+                                    case 2:
+                                        orderBy = NoteDBOpenHelper.RANK;
                                         break;
                                     default:
+                                        orderBy = NoteDBOpenHelper.TITLE;
                                         break;
                                 }
+                                if (new DBManager(getBaseContext()).getInstance(getBaseContext())
+                                        .sortby(orderBy)) {
+                                    //mAdapter.removeAllItem();
+                                    //init();
+                                    //dm.readFromDB(noteDataList);
+                                    mAdapter.notifyDataSetChanged();
+                                    }
+                                    */
                                 return true;
                             }
                         })

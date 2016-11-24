@@ -9,10 +9,10 @@
     <string name="cancel">Cancel</string>
     <string name="title">Title</string>
     <string name="add_picture">Add picture</string>
-    <string name="exit">Press again to exit</string>
+    <string name="exit">Tap again to exit</string>
     <string name="remove_all">Remove All</string>
     <string name="save">Save</string>
-    <string name="empty">Notes? Nada.</string>
+    <string name="empty">NoteNow! \n\n Tap + and start noting.</string>
     <string name="edit">Edit</string>
     <string name="add_note">Add Note</string>
     <string name="note_saved">The note is saved!</string>

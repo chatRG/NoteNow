@@ -7,13 +7,13 @@ import android.widget.TextView;
 
 import com.notenow.R;
 
-public class About extends AppCompatActivity {
-    final static private String VERSION = "v1.0";
+public class AboutActivity extends AppCompatActivity {
+    final static private String VERSION = "v1.1";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.about);
+        setContentView(R.layout.activity_about);
 
         TextView app_id = (TextView) findViewById(R.id.app_id);
         TextView app_ver = (TextView) findViewById(R.id.app_ver);

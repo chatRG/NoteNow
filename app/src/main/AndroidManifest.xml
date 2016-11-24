@@ -34,7 +34,7 @@
                 android:resource="@xml/searchable"
                 android:value=".activity.SearchActivity" />
         </activity>
-        <activity android:name=".activity.About">
+        <activity android:name=".activity.AboutActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />

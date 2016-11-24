@@ -11,6 +11,7 @@ import com.notenow.R;
 import com.notenow.db.DBManager;
 import com.notenow.model.Note;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,11 +60,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return notes.size();
     }
 
-    /*public Note sortItem(int position, Note mNotes) {
-        //
-        return mNotes;
-    }*/
-
     @Override
     public long getItemId(int position) {
         return position;
@@ -84,12 +80,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notifyItemRemoved(position);
     }
 
-    public static class ViewHolder {
-        public TextView tvId;
-        public TextView tvTitle;
-        public TextView tvContent;
-        public TextView tvTime;
-        public TextView tvRank;
+    public void setFilter(List<Note> listNotes) {
+        // This method updates the RecyclerView according to listNotes List
+        notes = new ArrayList<>();
+        notes.addAll(listNotes);
+        notifyDataSetChanged();
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder implements RVHViewHolder {

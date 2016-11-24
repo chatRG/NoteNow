@@ -26,22 +26,10 @@
         android:nextFocusUp="@id/note_title"
         android:textStyle="bold" />
 
-    <!-- <LinearLayout
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/note_title"
-         android:layout_centerHorizontal="true">
-
-         <View
-             android:layout_width="300dp"
-             android:layout_height="1dp"
-             android:background="@android:color/holo_blue_dark" />
-     </LinearLayout>-->
-
     <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/rankbar"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="36dp"
         android:layout_below="@id/note_title"
         android:max="4"
         android:paddingEnd="40dp"
