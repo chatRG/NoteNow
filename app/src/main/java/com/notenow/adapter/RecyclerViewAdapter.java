@@ -76,8 +76,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onItemDismiss(int position, int direction) {
         new DBManager(context).deleteNote(notes.get(position).getId());
         notes.remove(position);
-        notifyDataSetChanged();
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
     }
 
     public void setFilter(List<Note> listNotes) {

@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -17,7 +18,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerViewAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private TextView mEmptyList;
-    private RelativeLayout mainRelativeLayout;
+    private CoordinatorLayout mainRelativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void firstInit() {
-        mainRelativeLayout = (RelativeLayout) findViewById(R.id.mainRelativeLayout);
+        mainRelativeLayout = (CoordinatorLayout) findViewById(R.id.mainCoordinatorLayout);
         int value = getIntent().getIntExtra("isSaved", -1);
         if (value != -1)
             showSnackBar(R.string.note_saved, true);
@@ -111,7 +111,8 @@ public class MainActivity extends AppCompatActivity
 
     public void updateView() {
         if (noteDataList.isEmpty()) {
-            mRecyclerView.setVisibility(View.GONE);
+            if (mRecyclerView != null)
+                mRecyclerView.setVisibility(View.GONE);
             mEmptyList.setVisibility(View.VISIBLE);
         } else {
             mRecyclerView.setVisibility(View.VISIBLE);
@@ -201,7 +202,7 @@ public class MainActivity extends AppCompatActivity
                             }
                         }).show();
                 break;
-            case R.id.action_sort:
+            /*case R.id.action_sort:
                 new MaterialDialog.Builder(this)
                         .items(R.array.sort_order)
                         .buttonRippleColor(ContextCompat.getColor(this, R.color.ripple))
@@ -209,7 +210,7 @@ public class MainActivity extends AppCompatActivity
                         .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                /*String orderBy;
+                                *//*String orderBy;
                                 switch (which) {
                                     case 1:
                                         orderBy = NoteDBOpenHelper.TIME;
@@ -228,13 +229,13 @@ public class MainActivity extends AppCompatActivity
                                     //dm.readFromDB(noteDataList);
                                     mAdapter.notifyDataSetChanged();
                                     }
-                                    */
+                                    *//*
                                 return true;
                             }
                         })
                         .positiveText(R.string.ok)
                         .show();
-                break;
+                break;*/
             default:
                 break;
         }
