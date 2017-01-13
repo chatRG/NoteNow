@@ -1,5 +1,5 @@
-# NoteNow
-######A Material Design based android application for taking down notes.
+# NoteNow v1.1.1
+######A Material Design based lightweight android application for taking down notes.
 > A bit old-school concept. But, why not?
 
 [![Apache 2.0](http://img.shields.io/badge/license-Apache 2.0-blue.svg?style=flat)]() [![Stable Build](http://img.shields.io/badge/build-stable-brightgreen.svg?style=flat)]() [![Stable Build](http://img.shields.io/badge/Android-4.2.2+-brightred.svg?style=flat)]()
