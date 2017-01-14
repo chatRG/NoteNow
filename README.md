@@ -16,6 +16,8 @@
 - [ ] Custom colors
 - [ ] Sort by
 
+![Banner](https://raw.githubusercontent.com/chatRG/NoteNow/master/screenshot.png)
+
 #####Open Source libraries used:
 - Material Dialogs (afollestad)
 - Floating Action Button (makovkastar)
