@@ -3,7 +3,7 @@
 > A bit old-school concept. But, why not?
 
 
-[![Apache 2.0](http://img.shields.io/badge/license-Apache 2.0-blue.svg?style=flat)]()
+[![Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/chatRG/NoteNow/blob/master/License.txt)
 [![Stable Build](http://img.shields.io/badge/build-stable-brightgreen.svg?style=flat)]()
 [![Stable Build](http://img.shields.io/badge/Android-5.0-brightred.svg?style=flat)]()
 
