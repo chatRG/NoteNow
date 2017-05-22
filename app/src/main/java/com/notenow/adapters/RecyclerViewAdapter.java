@@ -1,4 +1,4 @@
-package com.notenow.adapter;
+package com.notenow.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.notenow.R;
 import com.notenow.db.DBManager;
 import com.notenow.model.Note;
+import com.notenow.utils.UtilTypeface;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,13 +47,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        holder.tvId.setText((notes.get(position).getId() + ""));
+        holder.tvRate.setText((notes.get(position).getRank() + "★"));
         holder.tvTitle.setText(notes.get(position).getTitle());
         String temp = notes.get(position).getContent();
         if (temp.length() >= 45)
             temp = temp.substring(0, 45).trim() + "...";
         holder.tvContent.setText(temp);
         holder.tvTime.setText(notes.get(position).getTime());
+
+        UtilTypeface.setCustomTypeface(context, holder.tvRate, holder.tvTitle,
+                holder.tvContent, holder.tvTime);
     }
 
     @Override
@@ -89,7 +93,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ItemViewHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
 
-        public TextView tvId;
+        public TextView tvRate;
         TextView tvTitle;
         TextView tvContent;
         TextView tvTime;
@@ -98,7 +102,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ItemViewHolder(View itemView) {
             super(itemView);
             this.ctx = itemView.getContext();
-            tvId = (TextView) itemView.findViewById(R.id.note_id);
+            tvRate = (TextView) itemView.findViewById(R.id.note_rate);
             tvTitle = (TextView) itemView.findViewById(R.id.note_title);
             tvContent = (TextView) itemView.findViewById(R.id.note_content);
             tvTime = (TextView) itemView.findViewById(R.id.note_time);

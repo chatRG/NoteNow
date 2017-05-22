@@ -8,24 +8,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/NoteNowTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.EditNoteActivity">
+        <activity android:name=".activities.EditNoteActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.SearchActivity"
+            android:name=".activities.SearchActivity"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activities.MainActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -34,10 +34,10 @@
                 android:resource="@xml/searchable"
                 android:value=".activity.SearchActivity" />
         </activity>
-        <activity android:name=".activity.AboutActivity">
+        <activity android:name=".activities.AboutActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
     </application>
 

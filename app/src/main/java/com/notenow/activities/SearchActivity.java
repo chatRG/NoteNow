@@ -1,4 +1,4 @@
-package com.notenow.activity;
+package com.notenow.activities;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.notenow.R;
-import com.notenow.adapter.RecyclerViewAdapter;
+import com.notenow.adapters.RecyclerViewAdapter;
 import com.notenow.db.DBManager;
 import com.notenow.model.Note;
 
@@ -40,8 +40,10 @@ public class SearchActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_search);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Search Results");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Search Results");
+        }
 
         init();
     }

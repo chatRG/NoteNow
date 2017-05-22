@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/editNoteRelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar_main"
+        layout="@layout/toolbar" />
+
+    <EditText
+        android:id="@+id/note_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_main"
+        android:layout_margin="10dp"
+        android:enabled="false"
+        android:gravity="center"
+        android:hint="@string/title"
+        android:inputType="text"
+        android:maxLength="40"
+        android:maxLines="1"
+        android:nextFocusLeft="@id/note_title"
+        android:nextFocusUp="@id/note_title"
+        android:textStyle="bold" />
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/rankbar"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_below="@id/note_title"
+        android:max="4"
+        android:paddingEnd="40dp"
+        android:paddingStart="40dp"
+        android:progress="4"
+        android:saveEnabled="false"
+        android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:thumb="@drawable/ic_seek_thumb" />
+
+    <EditText
+        android:id="@+id/note_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/rankbar"
+        android:layout_margin="10dp"
+        android:enabled="false"
+        android:gravity="start"
+        android:hint="@string/add_note"
+        android:inputType="textMultiLine" />
+
+</RelativeLayout>

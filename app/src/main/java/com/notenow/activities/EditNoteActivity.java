@@ -1,4 +1,4 @@
-package com.notenow.activity;
+package com.notenow.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.notenow.R;
 import com.notenow.db.DBManager;
 import com.notenow.model.Note;
+import com.notenow.utils.UtilTypeface;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,17 +42,22 @@ public class EditNoteActivity extends AppCompatActivity
         setContentView(R.layout.activity_edit_note);
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar_main));
-        getSupportActionBar().setTitle(R.string.add_note);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.add_note);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         init();
     }
 
     private void init() {
         dbManager = new DBManager(this);
+
         titleEt = (EditText) findViewById(R.id.note_title);
         contentEt = (EditText) findViewById(R.id.note_content);
         mRankBar = (SeekBar) findViewById(R.id.rankbar);
+
+        UtilTypeface.setCustomTypeface(EditNoteActivity.this, titleEt, contentEt);
+
         backPressedCount = 0;
         progress = -1;
         isEditPressed = false;
@@ -133,8 +139,7 @@ public class EditNoteActivity extends AppCompatActivity
                 break;
 
             case R.id.action_save:
-                if (saveNote())
-                    ;
+                saveNote();
                 break;
 
             default:

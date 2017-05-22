@@ -1,4 +1,4 @@
-package com.notenow.activity;
+package com.notenow.activities;
 
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -22,11 +23,11 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
 import com.notenow.R;
-import com.notenow.adapter.RecyclerViewAdapter;
+import com.notenow.adapters.RecyclerViewAdapter;
 import com.notenow.db.DBManager;
 import com.notenow.model.Note;
+import com.notenow.utils.UtilTypeface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         setSupportActionBar((Toolbar) this.findViewById(R.id.toolbar_main));
-        getSupportActionBar().setTitle(R.string.app_name);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setTitle(R.string.app_name);
 
         firstInit();
     }
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new RecyclerViewAdapter(this, noteDataList);
         mRecyclerView.setAdapter(mAdapter);
         mEmptyList = (TextView) this.findViewById(R.id.empty);
+        UtilTypeface.setCustomTypeface(MainActivity.this, mEmptyList);
         mRecyclerView.hasFixedSize();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -99,13 +102,25 @@ public class MainActivity extends AppCompatActivity
                         finish();
                     }
                 }));
+
+        mRecyclerView.setOnLongClickListener(
+                new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        new MaterialDialog.Builder(MainActivity.this)
+                                //TODO add dialog content to delete
+                                .show();
+                        return true;
+                    }
+                }
+        );
+
         updateView();
     }
 
     private void initFab() {
         mFAB = (FloatingActionButton) this.findViewById(R.id.add);
         mFAB.setOnClickListener(this);
-        mFAB.attachToRecyclerView(mRecyclerView);
         mFAB.show();
     }
 
