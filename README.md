@@ -4,8 +4,8 @@
 
 
 [![Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/chatRG/NoteNow/blob/master/License.txt)
-[![Stable Build](http://img.shields.io/badge/build-stable-brightgreen.svg?style=flat)]()
-[![Stable Build](http://img.shields.io/badge/Android-5.0-brightred.svg?style=flat)]()
+[![Build](http://img.shields.io/badge/build-passing-brightgreen.svg?style=flat)]()
+[![Android](http://img.shields.io/badge/Android-5.0-brightred.svg?style=flat)]()
 
 
 ![Banner](https://raw.githubusercontent.com/chatRG/NoteNow/master/art/Banner.png)
@@ -18,8 +18,8 @@
 - [x] Long press to re-position
 - [x] Rank by priority
 - [x] Search filter
+- [x] Sort by
 - [ ] Custom colors
-- [ ] Sort by
 
 ---
 

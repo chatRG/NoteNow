@@ -12,9 +12,9 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.notenow.R;
-import com.notenow.adapters.RecyclerViewAdapter;
 import com.notenow.db.DBManager;
 import com.notenow.model.Note;
+import com.notenow.recyclerview.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

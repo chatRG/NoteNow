@@ -65,6 +65,10 @@ public class DBManager {
     public void readFromDB(List<Note> noteList) {
         Cursor cursor = dbReader.query(NoteDBOpenHelper.TABLE_NAME,
                 null, null, null, null, null, null);
+        fillData(noteList, cursor);
+    }
+
+    private void fillData(List<Note> noteList, Cursor cursor) {
         try {
             while (cursor.moveToNext()) {
                 Note note = new Note();
@@ -77,8 +81,9 @@ public class DBManager {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            cursor.close();
         }
-
     }
 
     public void updateNote(int noteID, String title, String content, String time, String rank) {
@@ -113,36 +118,10 @@ public class DBManager {
         return note;
     }
 
-    public boolean sortby(String orderBy) {
-        /*Cursor mCursor;
-
-        String create_Table="create table note2 like " + NoteDBOpenHelper.TABLE_NAME;
-        dbWriter.execSQL(create_Table);
-        dbWriter.execSQL("INSERT INTO note2 ("
-                                + NoteDBOpenHelper.ID+", "
-                                + NoteDBOpenHelper.CONTENT+", "
-                                + NoteDBOpenHelper.TITLE+", "
-                                + NoteDBOpenHelper.RANK+", "
-                                + NoteDBOpenHelper.TIME+")" +
-                " SELECT "
-                + NoteDBOpenHelper.ID+", "
-                + NoteDBOpenHelper.CONTENT+", "
-                + NoteDBOpenHelper.TITLE+", "
-                + NoteDBOpenHelper.RANK+", "
-                + NoteDBOpenHelper.TIME+
-        " FROM "+NoteDBOpenHelper.TABLE_NAME+" ORDER BY "+orderBy);
-        dbWriter.execSQL("RENAME TABLE "+NoteDBOpenHelper.TABLE_NAME+" TO note1");
-        dbWriter.execSQL("RENAME TABLE note2 TO "+NoteDBOpenHelper.TABLE_NAME);*/
-
-        /*
-        mCursor = dbWriter.query(NoteDBOpenHelper.TABLE_NAME,
+    public void sortBy(List<Note> noteList, String orderBy) {
+        Cursor cursor = dbReader.query(NoteDBOpenHelper.TABLE_NAME,
                 null, null, null, null, null, orderBy);
-        if (mCursor == null)
-            return false;
-        deleteAllNote();
-        addToDB(mCursor);
-        dbWriter.execSQL("");*/
-        return true;
+        fillData(noteList, cursor);
     }
 }
 

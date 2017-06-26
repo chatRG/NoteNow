@@ -1,4 +1,4 @@
-package com.notenow.adapters;
+package com.notenow.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +13,6 @@ import com.notenow.model.Note;
 import com.notenow.utils.UtilTypeface;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
@@ -71,8 +70,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(notes, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
+        //Collections.swap(notes, fromPosition, toPosition);
+        //notifyItemMoved(fromPosition, toPosition);
         return false;
     }
 

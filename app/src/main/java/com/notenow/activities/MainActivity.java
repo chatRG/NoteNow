@@ -20,13 +20,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.notenow.R;
-import com.notenow.adapters.RecyclerViewAdapter;
 import com.notenow.db.DBManager;
+import com.notenow.db.NoteDBOpenHelper;
 import com.notenow.model.Note;
+import com.notenow.recyclerview.RecyclerViewAdapter;
 import com.notenow.utils.UtilTypeface;
 
 import java.util.ArrayList;
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity
                 new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
+                        Toast.makeText(MainActivity.this, "Long", Toast.LENGTH_SHORT).show();
                         new MaterialDialog.Builder(MainActivity.this)
                                 //TODO add dialog content to delete
                                 .show();
@@ -217,7 +220,7 @@ public class MainActivity extends AppCompatActivity
                             }
                         }).show();
                 break;
-            /*case R.id.action_sort:
+            case R.id.action_sort:
                 new MaterialDialog.Builder(this)
                         .items(R.array.sort_order)
                         .buttonRippleColor(ContextCompat.getColor(this, R.color.ripple))
@@ -225,7 +228,7 @@ public class MainActivity extends AppCompatActivity
                         .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                *//*String orderBy;
+                                String orderBy;
                                 switch (which) {
                                     case 1:
                                         orderBy = NoteDBOpenHelper.TIME;
@@ -237,20 +240,19 @@ public class MainActivity extends AppCompatActivity
                                         orderBy = NoteDBOpenHelper.TITLE;
                                         break;
                                 }
-                                if (new DBManager(getBaseContext()).getInstance(getBaseContext())
-                                        .sortby(orderBy)) {
-                                    //mAdapter.removeAllItem();
-                                    //init();
-                                    //dm.readFromDB(noteDataList);
-                                    mAdapter.notifyDataSetChanged();
-                                    }
-                                    *//*
+                                noteDataList.clear();
+                                new DBManager(getBaseContext()).getInstance(getBaseContext())
+                                        .sortBy(noteDataList, orderBy);
+                                //mAdapter.removeAllItem();
+                                //init();
+                                //dm.readFromDB(noteDataList);
+                                mAdapter.notifyDataSetChanged();
                                 return true;
                             }
                         })
                         .positiveText(R.string.ok)
                         .show();
-                break;*/
+                break;
             default:
                 break;
         }
