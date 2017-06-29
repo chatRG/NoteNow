@@ -15,6 +15,7 @@
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_search" />
+        android:layout_below="@+id/toolbar_search"
+        tools:listitem="@layout/notes_row" />
 
 </RelativeLayout>

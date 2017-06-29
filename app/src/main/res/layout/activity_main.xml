@@ -29,22 +29,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar_main"
-        android:layout_marginTop="?attr/actionBarSize" />
+        android:layout_marginTop="?attr/actionBarSize"
+        tools:listitem="@layout/notes_row" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="24dp"
         android:background="@color/colorPrimary"
+        android:elevation="6dp"
         android:src="@drawable/ic_action_add"
         app:fabSize="normal"
         app:layout_anchor="@id/rv_list"
         app:layout_anchorGravity="bottom|right|end"
         app:layout_behavior="com.notenow.utils.ScrollAwareFABBehavior"
+        app:pressedTranslationZ="12dp"
         app:rippleColor="@color/ripple" />
 
 </android.support.design.widget.CoordinatorLayout>
