@@ -31,3 +31,9 @@
 - RecyclerViewHelper (nisrulz)
 
 Send me a request if you are willing to contribute. :sunglasses:
+
+
+## Donation
+For all of this free stuff, you can surely offer a cup of coffee. Thanks!
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/chatrg/10usd)
